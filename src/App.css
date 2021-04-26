@@ -1,4 +1,5 @@
-.card {
+.card,
+form {
   width: 200px;
   border: 1px solid black;
   padding: 20px;
