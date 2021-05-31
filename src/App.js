@@ -9,6 +9,7 @@ function App() {
     email: "",
     phone: "",
   });
+  const [error, setError] = useState("");
 
   const getUsers = () => {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -30,15 +31,35 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setUsers((prevState) => {
-      return [newUser, ...prevState];
+    if (
+      newUser.name.length === 0 ||
+      newUser.email.length === 0 ||
+      newUser.phone.length === 0
+    ) {
+      setError("Please fill in all the fields");
+    } else {
+      setUsers((prevState) => {
+        return [newUser, ...prevState];
+      });
+      setNewUser({ name: "", phone: "", email: "" });
+      setError("");
+    }
+  };
+
+  const handleEdited = (editedUser) => {
+    const editedArray = users.map((user) => {
+      if (user.id === editedUser.id) {
+        return editedUser;
+      } else {
+        return user;
+      }
     });
-    setNewUser({ name: "", phone:"", email:""})
+    setUsers(editedArray);
   };
 
   return (
     <div className='App'>
-      <form>
+      <form className='add-user-form'>
         <label htmlFor='user-name'>Name: </label>
         <input
           type='text'
@@ -64,10 +85,16 @@ function App() {
           name='phone'
         />
         <input type='button' value='Add new user' onClick={handleSubmit} />
+        <p>{error}</p>
       </form>
 
       {users.map((user, index) => (
-        <UserCard key={index} {...user} handleClick={handleClick} />
+        <UserCard
+          key={index}
+          {...user}
+          handleClick={handleClick}
+          handleEdited={handleEdited}
+        />
       ))}
     </div>
   );

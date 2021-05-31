@@ -1,7 +1,7 @@
 import { useState } from "react";
 import EditUser from "./EditUser";
 
-const UserCard = ({ name, email, phone, handleClick, id }) => {
+const UserCard = ({ name, email, phone, handleClick, id, handleEdited }) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   return (
@@ -13,7 +13,7 @@ const UserCard = ({ name, email, phone, handleClick, id }) => {
           <p>phone: {phone}</p>
         </>
       ) : (
-        <EditUser name={name} email={email} phone={phone} />
+        <EditUser setIsEditMode={setIsEditMode} id={id} name={name} email={email} phone={phone} handleEdited={handleEdited} />
       )}
 
       <button onClick={() => handleClick(id)}>Delete user</button>
